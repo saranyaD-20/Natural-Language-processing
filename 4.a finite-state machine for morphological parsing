@@ -1,0 +1,32 @@
+import nltk
+from nltk import RegexpTokenizer
+
+class PluralFiniteStateMachine:
+    transitions = [
+        (1, '([^aeiouy])$', r'\1\1'),        # Rule 1: Add 's' -> cats, dogs
+        (2, '([aeiouy])$', r'\1s'),          # Rule 2: Add 'es' -> trees, boys
+        (3, '([^aeiouy])y$', r'\1ies'),      # Rule 3: Change 'y' to 'ies' -> cities, babies
+        (4, '(o)$', r'\1es'),                # Rule 4: Add 'es' -> potatoes, tomatoes
+        (5, '([^sxz])$', r'\1s'),            # Rule 5: Add 's' -> books, pens
+        (6, '(.*)', r'\1s')                  # Default: Add 's' -> nouns ending in s, x, z
+    ]
+
+    tokenizer = RegexpTokenizer(r'\b\w+\b')
+
+    def pluralize(noun):
+        tokens = PluralFiniteStateMachine.tokenizer.tokenize(noun.lower())
+        if tokens:
+            singular = tokens[0]
+            for state, pattern, replacement in PluralFiniteStateMachine.transitions:
+                if nltk.re.match(pattern, singular):
+                    plural = nltk.re.sub(pattern, replacement, singular)
+                    return plural
+        return None
+singular_nouns = ["cat", "dog", "tree", "boy", "city", "baby", "potato", "tomato", "book", "pen", "bus"]
+
+for noun in singular_nouns:
+    plural = PluralFiniteStateMachine.pluralize(noun)
+    if plural:
+        print(f"Singular: {noun}  =>  Plural: {plural}")
+    else:
+        print(f"No plural form generated for '{noun}'")
