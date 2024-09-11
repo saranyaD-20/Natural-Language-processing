@@ -1,0 +1,15 @@
+import re
+text1="natural language processing"
+text2="natural language processing"
+word="natural language processing"
+pattern=fr'/b{word}/b'
+match1=re.search(pattern,text1)
+if match1:
+    print("match found")
+else:
+        print("match not found")
+match2=re.search(pattern,text2)
+if match2:
+    print("match found")
+else:
+    print("match not found")
