@@ -1,0 +1,16 @@
+import nltk
+from nltk.corpus import stopwords
+nltk.download('stopwords')
+stop_words = stopwords.words('english')
+# Print some stopwords
+print("Some English stopwords:")
+print(stop_words[:20])
+stop_words = set(stopwords.words('english'))
+filtered_tokens = [word for word in tokens if word.lower() not in stop_words]
+print("\n tokens without stopwords:")
+print(filtered_tokens)
+from nltk.stem import PorterStemmer
+porter = PorterStemmer()
+stemmed_words = [porter.stem(word) for word in filtered_tokens]
+print("\nStemmed Words:")
+print(stemmed_words)
